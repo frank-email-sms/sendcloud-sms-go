@@ -1,1 +1,1 @@
-# sendcloud-sms-go-sdk
+# sendcloud-sms-go
