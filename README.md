@@ -87,4 +87,4 @@ func main() {
 }
 ```
 
-Please note that you need to replace the placeholders (like `API_KEY`, `API_SECRET`, and `smsClient`) with actual credentials and package names. Also, the fields of the `SendSmsTemplateArgs` struct and the methods of the `SmsClient` may vary depending on the library you're using, so make sure to consult the documentation of the library you're working with for accurate usage.
+Please note that you need to replace the placeholders (like `API_KEY`, `API_SECRET`, and `smsClient`) with actual credentials and package names. 
