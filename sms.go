@@ -92,45 +92,36 @@ func (client *SmsClient) SendSmsTemplate(args *SendSmsTemplateArgs) (*SendSmsRes
 }
 
 func (client *SmsClient)calculateSignature(params url.Values) string {
-	// 创建一个新的url.Values，以便我们可以修改它而不影响原始params
 	sortedParams := url.Values{}
 
-	// 将除了smsKey和signature之外的所有参数复制到新的map中
 	for k, v := range params {
 		if k != "smsKey" && k != "signature" {
 			sortedParams[k] = v
 		}
 	}
 
-	// 创建一个键的切片，以便我们可以按字母顺序对它们进行排序
 	keys := make([]string, 0, len(sortedParams))
 	for k := range sortedParams {
 		keys = append(keys, k)
 	}
 
-	// 对键进行排序
 	sort.Strings(keys)
 
-	// 构建param_str
 	var paramStr string
 	for _, k := range keys {
 		paramStr += k + "=" + sortedParams.Get(k) + "&"
 	}
 
-	// 去掉paramStr末尾的'&'
 	if len(paramStr) > 0 {
 		paramStr = paramStr[:len(paramStr)-1]
 	}
 
-	// 构建sign_str
 	signStr := client.SmsKey + "&" + paramStr + "&" + client.SmsKey
 
-	// 计算sha256值
 	hasher := sha256.New()
 	hasher.Write([]byte(signStr))
 	sha256Bytes := hasher.Sum(nil)
 
-	// 将MD5字节转换为十六进制字符串
 	signature := hex.EncodeToString(sha256Bytes)
 
 	return signature
@@ -179,23 +170,18 @@ func isValidMsgType(msgType int) bool {
 
 // ValidatePhoneNumbers 校验phone参数中的手机号
 func ValidatePhoneNumbers(phone string) error {
-	// 分割手机号
 	phoneNumbers := strings.Split(phone, ",")
 
-	// 校验手机号数量是否超过2000个
 	if len(phoneNumbers) > 2000 {
 		return errors.New("the number of mobile phone numbers exceeds the maximum limit of 2,000")
 	}
 
-	// 遍历每个手机号并校验格式
 	for _, number := range phoneNumbers {
-		// 去除可能存在的空白字符
 		trimmedNumber := strings.TrimSpace(number)
 		if trimmedNumber == "" {
 			return errors.New("phone number can not be blank")
 		}
 	}
-	// 所有手机号都校验通过
 	return nil
 }
 
