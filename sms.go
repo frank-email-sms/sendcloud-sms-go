@@ -147,6 +147,9 @@ func (client *SmsClient) prepareSendSmsTemplateParams(args *SendSmsTemplateArgs)
 
 
 func (client *SmsClient)validateConfig() error {
+	if len(client.SmsBasePath) == 0 {
+		client.SmsBasePath = smsBasePath
+    }
 	switch {
 	case len(client.SmsUser) == 0:
 		return errors.New("smsUser cannot be empty")
