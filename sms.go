@@ -141,7 +141,16 @@ func (client *SmsClient) prepareSendSmsTemplateParams(args *SendSmsTemplateArgs)
 		}
 		params.Set("vars", string(varsJSON))
 	}
-
+	if len(args.SendRequestId) > 0 {
+        params.Set("sendRequestId", args.SendRequestId)
+    }
+	if len(args.Tag) > 0 {
+		tagJSON, err := json.Marshal(args.Tag)
+		if err != nil {
+			return nil, fmt.Errorf("failed to marshal tag: %v", err)
+		}
+		params.Set("tag", string(tagJSON))
+    }
 	return params, nil
 }
 
@@ -194,6 +203,15 @@ func validateSendSmsTemplate(args *SendSmsTemplateArgs) error {
 	case len(args.Phone) == 0:
 		return errors.New("phone cannot be empty")
 	}
+	// sendRequestId 最大支持128字符
+	if len(args.SendRequestId) > 128 {
+        return errors.New("sendRequestId cannot exceed 128 characters")
+    }
+    // 校验手机号
+    if err := ValidatePhoneNumbers(args.Phone); err != nil {
+        return fmt.Errorf("failed to send message: %w", err)
+    }
+    return nil
 	if err := ValidatePhoneNumbers(args.Phone); err != nil {
 		return fmt.Errorf("failed to send message: %w", err)
 	}
