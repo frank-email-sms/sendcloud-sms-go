@@ -1,4 +1,8 @@
-package sendcloud_sms_go
+package sendcloud
+
+import (
+	"net/http"
+)
 
 const (
 	SMS          = 0
@@ -9,7 +13,30 @@ const (
 	YX           = 5
 )
 
-type SendSmsTemplateArgs struct {
+const (
+	smsBasePath = "https://api.sendcloud.net/smsapi"
+	sendSmsTemplatePath  =  "/send"
+	sendSmsVoicePath   =  "/sendVoice"
+	sendSmsCodePath   =  "/sendCode"
+)
+
+type SendCloud struct {
+	SmsUser    string
+	SmsKey     string
+	SmsBasePath string
+	client  *http.Client
+}
+
+type Response struct {
+	*http.Response
+}
+
+type ErrorResponse struct {
+	Response *http.Response // HTTP response that caused this error
+	Message  string         `json:"message"` // error message
+}
+
+type TemplateSms struct {
 	TemplateId  int
 	LabelId     int
 	MsgType     int
@@ -19,6 +46,24 @@ type SendSmsTemplateArgs struct {
 	Tag string
 }
 
+type VoiceSms struct {
+	Phone       string
+	Code       string
+	LabelId     int
+	SendRequestId string
+	Tag string
+}
+
+type CodeSms struct {
+	MsgType     int
+	Phone       string
+	SignId		int
+	SignName	string
+	Code       string
+	LabelId     int
+	SendRequestId string
+	Tag string
+}
 
 type SendSmsResult struct {
 	Result     bool        `json:"result"`
