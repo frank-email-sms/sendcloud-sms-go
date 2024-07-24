@@ -2,7 +2,7 @@ package sendcloud
 
 import "testing"
 
-func TestSendSmsTemplate(t *testing.T) {
+func TestSendTemplateSms(t *testing.T) {
 	client, err := NewSendCloud("**", "**")
     if err != nil {
         t.Error(err)
@@ -19,7 +19,7 @@ func TestSendSmsTemplate(t *testing.T) {
     t.Log(result)
 }
 
-func TestSendSmsVoice(t *testing.T) {
+func TestSendVoiceSms(t *testing.T) {
     client, err := NewSendCloud("**", "**")
     if err != nil {
         t.Error(err)
@@ -35,7 +35,7 @@ func TestSendSmsVoice(t *testing.T) {
     t.Log(result)
 }
 
-func TestSendSmsCode(t *testing.T) {
+func TestSendCodeSms(t *testing.T) {
     client, err := NewSendCloud("**", "**")
     if err != nil {
         t.Error(err)

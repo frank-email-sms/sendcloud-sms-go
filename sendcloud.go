@@ -54,34 +54,6 @@ func (client *SendCloud) SendTemplateSms(args *TemplateSms) (*SendSmsResult, err
 	return responseData, nil
 }
 
-func (client *SendCloud) SendCodeSms(args *CodeSms) (*SendSmsResult, error) {
-	if err := client.validateConfig(); err != nil {
-		return nil,fmt.Errorf("SendCodeSms: %w", err)
-	}
-	if err := args.validateCodeSms(); err != nil {
-		return nil,fmt.Errorf("SendCodeSms: %w", err)
-	}
-	params, err := client.prepareSendCodeSmsParams(args)
-	if err != nil {
-		return nil,fmt.Errorf("SendCodeSms: %w", err)
-	}
-	signature := client.calculateSignature(params)
-	params.Set("signature", signature)
-	sendSmsCodeUrl := client.apiBase + sendSmsCodePath
-	formDataEncoded := params.Encode()
-	req, err := http.NewRequest("POST", sendSmsCodeUrl, bytes.NewBufferString(formDataEncoded))
-	if err != nil {
-		return nil, fmt.Errorf("SendCodeSms: %w", err)
-	}
-	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-	responseData := new(SendSmsResult)
-	err = client.request(req, responseData)
-	if err != nil {
-		return responseData, err
-	}
-	return responseData, nil
-}
-
 func (client *SendCloud) SendVoiceSms(args *VoiceSms) (*SendSmsResult, error) {
 	if err := client.validateConfig(); err != nil {
 		return nil,fmt.Errorf("SendVoiceSms: %w", err)
@@ -100,6 +72,34 @@ func (client *SendCloud) SendVoiceSms(args *VoiceSms) (*SendSmsResult, error) {
 	req, err := http.NewRequest("POST", sendSmsVoiceUrl, bytes.NewBufferString(formDataEncoded))
 	if err != nil {
 		return nil, fmt.Errorf("SendVoiceSms: %w", err)
+	}
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	responseData := new(SendSmsResult)
+	err = client.request(req, responseData)
+	if err != nil {
+		return responseData, err
+	}
+	return responseData, nil
+}
+
+func (client *SendCloud) SendCodeSms(args *CodeSms) (*SendSmsResult, error) {
+	if err := client.validateConfig(); err != nil {
+		return nil,fmt.Errorf("SendCodeSms: %w", err)
+	}
+	if err := args.validateCodeSms(); err != nil {
+		return nil,fmt.Errorf("SendCodeSms: %w", err)
+	}
+	params, err := client.prepareSendCodeSmsParams(args)
+	if err != nil {
+		return nil,fmt.Errorf("SendCodeSms: %w", err)
+	}
+	signature := client.calculateSignature(params)
+	params.Set("signature", signature)
+	sendSmsCodeUrl := client.apiBase + sendSmsCodePath
+	formDataEncoded := params.Encode()
+	req, err := http.NewRequest("POST", sendSmsCodeUrl, bytes.NewBufferString(formDataEncoded))
+	if err != nil {
+		return nil, fmt.Errorf("SendCodeSms: %w", err)
 	}
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 	responseData := new(SendSmsResult)

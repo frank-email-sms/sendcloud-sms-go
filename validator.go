@@ -37,7 +37,7 @@ func ValidatePhoneNumbers(phone string) error {
 	for _, number := range phoneNumbers {
 		trimmedNumber := strings.TrimSpace(number)
 		if trimmedNumber == "" {
-			return errors.New("phone number can not be blank")
+			return errors.New("phone number can not be empty")
 		}
 	}
 	return nil
@@ -46,9 +46,9 @@ func ValidatePhoneNumbers(phone string) error {
 func (s *TemplateSms) validateTemplateSms() error {
 	switch {
 	case s.TemplateId == 0:
-		return errors.New("templateId cannot be zero")
+		return errors.New("templateId value is illegal")
 	case !isValidMsgType(s.MsgType):
-		return errors.New("msgType cannot be negative")
+		return errors.New("msgType value is illegal")
 	case len(s.Phone) == 0:
 		return errors.New("phone cannot be empty")
 	case len(s.SendRequestId) > 128 :
@@ -74,10 +74,12 @@ func (s *VoiceSms) validateVoiceSms() error {
 
 func (s *CodeSms) validateCodeSms() error {
 	switch {
-	case len(s.Code) == 0:
-		return errors.New("code cannot be empty")
+	case !isValidMsgType(s.MsgType):
+		return errors.New("msgType value is illegal")
 	case len(s.Phone) == 0:
 		return errors.New("phone cannot be empty")
+	case len(s.Code) == 0:
+		return errors.New("code cannot be empty")
 	case len(s.SendRequestId) > 128 :
 		return errors.New("sendRequestId cannot exceed 128 characters")
 	}
