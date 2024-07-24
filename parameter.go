@@ -36,7 +36,7 @@ func (client *SendCloud)calculateSignature(params url.Values) string {
 		paramStr = paramStr[:len(paramStr)-1]
 	}
 
-	signStr := client.SmsKey + "&" + paramStr + "&" + client.SmsKey
+	signStr := client.smsKey + "&" + paramStr + "&" + client.smsKey
 
 	hasher := sha256.New()
 	hasher.Write([]byte(signStr))
@@ -49,7 +49,7 @@ func (client *SendCloud)calculateSignature(params url.Values) string {
 
 func (client *SendCloud) prepareSendTemplateSmsParams(args *TemplateSms) (url.Values, error) {
 	params := url.Values{}
-	params.Set("smsUser", client.SmsUser)
+	params.Set("smsUser", client.smsUser)
 	params.Set("msgType", strconv.Itoa(args.MsgType))
 	params.Set("phone", args.Phone)
 	params.Set("templateId", strconv.Itoa(args.TemplateId))
@@ -62,7 +62,7 @@ func (client *SendCloud) prepareSendTemplateSmsParams(args *TemplateSms) (url.Va
 		params.Set("vars", string(varsJSON))
 	}
 	if args.LabelId != 0 {
-		params.Set("labelId", string(args.LabelId))
+		params.Set("labelId", strconv.Itoa(args.LabelId))
 	}
 	if len(args.SendRequestId) > 0 {
 		params.Set("sendRequestId", args.SendRequestId)
@@ -79,11 +79,11 @@ func (client *SendCloud) prepareSendTemplateSmsParams(args *TemplateSms) (url.Va
 
 func (client *SendCloud) prepareSendVoiceSmsParams(args *VoiceSms) (url.Values, error) {
 	params := url.Values{}
-	params.Set("smsUser", client.SmsUser)
+	params.Set("smsUser", client.smsUser)
 	params.Set("phone", args.Phone)
 	params.Set("code", args.Code)
 	if args.LabelId != 0 {
-		params.Set("labelId", string(args.LabelId))
+		params.Set("labelId", strconv.Itoa(args.LabelId))
 	}
 	if len(args.SendRequestId) > 0 {
 		params.Set("sendRequestId", args.SendRequestId)
@@ -101,7 +101,7 @@ func (client *SendCloud) prepareSendVoiceSmsParams(args *VoiceSms) (url.Values, 
 
 func (client *SendCloud) prepareSendCodeSmsParams(args *CodeSms) (url.Values, error) {
 	params := url.Values{}
-	params.Set("smsUser", client.SmsUser)
+	params.Set("smsUser", client.smsUser)
 	params.Set("msgType", strconv.Itoa(args.MsgType))
 	params.Set("phone", args.Phone)
 	if args.SignId!=0{
@@ -112,7 +112,7 @@ func (client *SendCloud) prepareSendCodeSmsParams(args *CodeSms) (url.Values, er
 	}
 	params.Set("code", args.Code)
 	if args.LabelId != 0 {
-		params.Set("labelId", string(args.LabelId))
+		params.Set("labelId", strconv.Itoa(args.LabelId))
 	}
 	if len(args.SendRequestId) > 0 {
 		params.Set("sendRequestId", args.SendRequestId)

@@ -6,13 +6,13 @@ import (
 )
 
 func (client *SendCloud)validateConfig() error {
-	if len(client.SmsBasePath) == 0 {
-		client.SmsBasePath = smsBasePath
+	if len(client.apiBase) == 0 {
+		client.apiBase = smsBasePath
 	}
 	switch {
-	case len(client.SmsUser) == 0:
+	case len(client.smsUser) == 0:
 		return errors.New("smsUser cannot be empty")
-	case len(client.SmsKey) == 0:
+	case len(client.smsKey) == 0:
 		return errors.New("smsKey cannot be empty")
 	}
 	return nil

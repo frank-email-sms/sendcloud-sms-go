@@ -18,9 +18,9 @@ func NewSendCloud(smsUser string, smsKey string) (*SendCloud, error) {
 		return nil,errors.New("NewSendCloud: smsKey cannot be empty")
 	}
 	return &SendCloud{
-        SmsUser:    smsUser,
-        SmsKey:     smsKey,
-        SmsBasePath: smsBasePath,
+		smsUser:    smsUser,
+		smsKey:     smsKey,
+        apiBase: smsBasePath,
 		client:  http.DefaultClient,
     }, nil
 }
@@ -39,7 +39,7 @@ func (client *SendCloud) SendTemplateSms(args *TemplateSms) (*SendSmsResult, err
 	}
 	signature := client.calculateSignature(params)
 	params.Set("signature", signature)
-	sendSmsTemplateUrl := client.SmsBasePath + sendSmsTemplatePath
+	sendSmsTemplateUrl := client.apiBase + sendSmsTemplatePath
 	formDataEncoded := params.Encode()
 	req, err := http.NewRequest("POST", sendSmsTemplateUrl, bytes.NewBufferString(formDataEncoded))
 	if err != nil {
@@ -67,7 +67,7 @@ func (client *SendCloud) SendCodeSms(args *CodeSms) (*SendSmsResult, error) {
 	}
 	signature := client.calculateSignature(params)
 	params.Set("signature", signature)
-	sendSmsCodeUrl := client.SmsBasePath + sendSmsCodePath
+	sendSmsCodeUrl := client.apiBase + sendSmsCodePath
 	formDataEncoded := params.Encode()
 	req, err := http.NewRequest("POST", sendSmsCodeUrl, bytes.NewBufferString(formDataEncoded))
 	if err != nil {
@@ -95,7 +95,7 @@ func (client *SendCloud) SendVoiceSms(args *VoiceSms) (*SendSmsResult, error) {
 	}
 	signature := client.calculateSignature(params)
 	params.Set("signature", signature)
-	sendSmsVoiceUrl := client.SmsBasePath + sendSmsVoicePath
+	sendSmsVoiceUrl := client.apiBase + sendSmsVoicePath
 	formDataEncoded := params.Encode()
 	req, err := http.NewRequest("POST", sendSmsVoiceUrl, bytes.NewBufferString(formDataEncoded))
 	if err != nil {

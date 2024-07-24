@@ -21,9 +21,9 @@ const (
 )
 
 type SendCloud struct {
-	SmsUser    string
-	SmsKey     string
-	SmsBasePath string
+	smsUser    string
+	smsKey     string
+	apiBase string
 	client  *http.Client
 }
 
