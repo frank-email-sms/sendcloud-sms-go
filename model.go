@@ -14,15 +14,15 @@ const (
 )
 
 const (
-	smsBasePath = "https://api.sendcloud.net/smsapi"
-	sendSmsTemplatePath  =  "/send"
-	sendSmsVoicePath   =  "/sendVoice"
-	sendSmsCodePath   =  "/sendCode"
+	smsBasePath         = "https://api.sendcloud.net/smsapi"
+	sendSmsTemplatePath = "/send"
+	sendSmsVoicePath    = "/sendVoice"
+	sendSmsCodePath     = "/sendCode"
 )
 
-type SendCloud struct {
-	smsUser    string
-	smsKey     string
+type SendCloudSms struct {
+	smsUser string
+	smsKey  string
 	apiBase string
 	client  *http.Client
 }
@@ -37,32 +37,32 @@ type ErrorResponse struct {
 }
 
 type TemplateSms struct {
-	TemplateId  int
-	LabelId     int
-	MsgType     int
-	Phone       string
-	Vars        string
+	TemplateId    int
+	LabelId       int
+	MsgType       int
+	Phone         string
+	Vars          string
 	SendRequestId string
-	Tag string
+	Tag           string
 }
 
 type VoiceSms struct {
-	Phone       string
-	Code       string
-	LabelId     int
+	Phone         string
+	Code          string
+	LabelId       int
 	SendRequestId string
-	Tag string
+	Tag           string
 }
 
 type CodeSms struct {
-	MsgType     int
-	Phone       string
-	SignId		int
-	SignName	string
-	Code       string
-	LabelId     int
+	MsgType       int
+	Phone         string
+	SignId        int
+	SignName      string
+	Code          string
+	LabelId       int
 	SendRequestId string
-	Tag string
+	Tag           string
 }
 
 type SendSmsResult struct {
@@ -71,4 +71,3 @@ type SendSmsResult struct {
 	Message    string      `json:"message"`
 	Info       interface{} `json:"info"`
 }
-

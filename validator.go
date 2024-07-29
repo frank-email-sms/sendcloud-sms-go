@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-func (client *SendCloud)validateConfig() error {
+func (client *SendCloudSms) validateConfig() error {
 	if len(client.apiBase) == 0 {
 		client.apiBase = smsBasePath
 	}
@@ -51,7 +51,7 @@ func (s *TemplateSms) validateTemplateSms() error {
 		return errors.New("msgType value is illegal")
 	case len(s.Phone) == 0:
 		return errors.New("phone cannot be empty")
-	case len(s.SendRequestId) > 128 :
+	case len(s.SendRequestId) > 128:
 		return errors.New("sendRequestId cannot exceed 128 characters")
 	}
 	if err := ValidatePhoneNumbers(s.Phone); err != nil {
@@ -66,7 +66,7 @@ func (s *VoiceSms) validateVoiceSms() error {
 		return errors.New("code cannot be empty")
 	case len(s.Phone) == 0:
 		return errors.New("phone cannot be empty")
-	case len(s.SendRequestId) > 128 :
+	case len(s.SendRequestId) > 128:
 		return errors.New("sendRequestId cannot exceed 128 characters")
 	}
 	return nil
@@ -80,7 +80,7 @@ func (s *CodeSms) validateCodeSms() error {
 		return errors.New("phone cannot be empty")
 	case len(s.Code) == 0:
 		return errors.New("code cannot be empty")
-	case len(s.SendRequestId) > 128 :
+	case len(s.SendRequestId) > 128:
 		return errors.New("sendRequestId cannot exceed 128 characters")
 	}
 	return nil

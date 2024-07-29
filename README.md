@@ -15,7 +15,7 @@ import (
 Next, you need to initialize the `sendcloud` using credentials provided by your SMS service provider, such as an API key or username/password. Assuming there's a `Newsendcloud` function that takes two string parameters (replaced with `**` placeholders):
 
 ```go
-client, err := sendcloud.Newsendcloud("API_KEY", "API_SECRET")  
+client, err := sendcloud.NewSendCloudSms("API_KEY", "API_SECRET")  
 if err != nil {  
     // Handle the error, for example, by printing it or returning  
     log.Fatal(err)  
@@ -65,7 +65,7 @@ import (
 )  
   
 func main() {  
-    client, err := sendcloud.Newsendcloud("API_KEY", "API_SECRET")  
+    client, err := sendcloud.NewSendCloudSms("API_KEY", "API_SECRET")  
     if err != nil {  
         log.Fatal(err)  
     }  

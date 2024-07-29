@@ -9,33 +9,31 @@ import (
 	"net/http"
 )
 
-
-func NewSendCloud(smsUser string, smsKey string) (*SendCloud, error) {
+func NewSendCloudSms(smsUser string, smsKey string) (*SendCloudSms, error) {
 	switch {
 	case len(smsUser) == 0:
-		return nil,errors.New("NewSendCloud: smsUser cannot be empty")
+		return nil, errors.New("NewSendCloudSms: smsUser cannot be empty")
 	case len(smsKey) == 0:
-		return nil,errors.New("NewSendCloud: smsKey cannot be empty")
+		return nil, errors.New("NewSendCloudSms: smsKey cannot be empty")
 	}
-	return &SendCloud{
-		smsUser:    smsUser,
-		smsKey:     smsKey,
-        apiBase: smsBasePath,
+	return &SendCloudSms{
+		smsUser: smsUser,
+		smsKey:  smsKey,
+		apiBase: smsBasePath,
 		client:  http.DefaultClient,
-    }, nil
+	}, nil
 }
 
-
-func (client *SendCloud) SendTemplateSms(args *TemplateSms) (*SendSmsResult, error) {
+func (client *SendCloudSms) SendTemplateSms(args *TemplateSms) (*SendSmsResult, error) {
 	if err := client.validateConfig(); err != nil {
-		return nil,fmt.Errorf("SendTemplateSms: %w", err)
+		return nil, fmt.Errorf("SendTemplateSms: %w", err)
 	}
 	if err := args.validateTemplateSms(); err != nil {
-		return nil,fmt.Errorf("SendTemplateSms: %w", err)
+		return nil, fmt.Errorf("SendTemplateSms: %w", err)
 	}
 	params, err := client.prepareSendTemplateSmsParams(args)
 	if err != nil {
-		return nil,fmt.Errorf("SendTemplateSms: %w", err)
+		return nil, fmt.Errorf("SendTemplateSms: %w", err)
 	}
 	signature := client.calculateSignature(params)
 	params.Set("signature", signature)
@@ -54,16 +52,16 @@ func (client *SendCloud) SendTemplateSms(args *TemplateSms) (*SendSmsResult, err
 	return responseData, nil
 }
 
-func (client *SendCloud) SendVoiceSms(args *VoiceSms) (*SendSmsResult, error) {
+func (client *SendCloudSms) SendVoiceSms(args *VoiceSms) (*SendSmsResult, error) {
 	if err := client.validateConfig(); err != nil {
-		return nil,fmt.Errorf("SendVoiceSms: %w", err)
+		return nil, fmt.Errorf("SendVoiceSms: %w", err)
 	}
 	if err := args.validateVoiceSms(); err != nil {
-		return nil,fmt.Errorf("SendVoiceSms: %w", err)
+		return nil, fmt.Errorf("SendVoiceSms: %w", err)
 	}
 	params, err := client.prepareSendVoiceSmsParams(args)
 	if err != nil {
-		return nil,fmt.Errorf("SendVoiceSms: %w", err)
+		return nil, fmt.Errorf("SendVoiceSms: %w", err)
 	}
 	signature := client.calculateSignature(params)
 	params.Set("signature", signature)
@@ -82,16 +80,16 @@ func (client *SendCloud) SendVoiceSms(args *VoiceSms) (*SendSmsResult, error) {
 	return responseData, nil
 }
 
-func (client *SendCloud) SendCodeSms(args *CodeSms) (*SendSmsResult, error) {
+func (client *SendCloudSms) SendCodeSms(args *CodeSms) (*SendSmsResult, error) {
 	if err := client.validateConfig(); err != nil {
-		return nil,fmt.Errorf("SendCodeSms: %w", err)
+		return nil, fmt.Errorf("SendCodeSms: %w", err)
 	}
 	if err := args.validateCodeSms(); err != nil {
-		return nil,fmt.Errorf("SendCodeSms: %w", err)
+		return nil, fmt.Errorf("SendCodeSms: %w", err)
 	}
 	params, err := client.prepareSendCodeSmsParams(args)
 	if err != nil {
-		return nil,fmt.Errorf("SendCodeSms: %w", err)
+		return nil, fmt.Errorf("SendCodeSms: %w", err)
 	}
 	signature := client.calculateSignature(params)
 	params.Set("signature", signature)
@@ -110,7 +108,7 @@ func (client *SendCloud) SendCodeSms(args *CodeSms) (*SendSmsResult, error) {
 	return responseData, nil
 }
 
-func (client *SendCloud) request(req *http.Request, responseResult *SendSmsResult) error {
+func (client *SendCloudSms) request(req *http.Request, responseResult *SendSmsResult) error {
 	resp, err := client.client.Do(req)
 	if err != nil {
 		return err
@@ -126,7 +124,7 @@ func (client *SendCloud) request(req *http.Request, responseResult *SendSmsResul
 		if err != nil {
 			return err
 		}
-		if responseResult.StatusCode!= http.StatusOK {
+		if responseResult.StatusCode != http.StatusOK {
 			return errors.New(responseResult.Message)
 		}
 	}
@@ -154,5 +152,3 @@ func (r *ErrorResponse) Error() string {
 		r.Response.Request.Method, r.Response.Request.URL,
 		r.Response.StatusCode, r.Message)
 }
-
-

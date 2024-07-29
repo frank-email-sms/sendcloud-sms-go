@@ -11,7 +11,7 @@ import (
 	"time"
 )
 
-func (client *SendCloud)calculateSignature(params url.Values) string {
+func (client *SendCloudSms) calculateSignature(params url.Values) string {
 	sortedParams := url.Values{}
 
 	for k, v := range params {
@@ -47,7 +47,7 @@ func (client *SendCloud)calculateSignature(params url.Values) string {
 	return signature
 }
 
-func (client *SendCloud) prepareSendTemplateSmsParams(args *TemplateSms) (url.Values, error) {
+func (client *SendCloudSms) prepareSendTemplateSmsParams(args *TemplateSms) (url.Values, error) {
 	params := url.Values{}
 	params.Set("smsUser", client.smsUser)
 	params.Set("msgType", strconv.Itoa(args.MsgType))
@@ -77,7 +77,7 @@ func (client *SendCloud) prepareSendTemplateSmsParams(args *TemplateSms) (url.Va
 	return params, nil
 }
 
-func (client *SendCloud) prepareSendVoiceSmsParams(args *VoiceSms) (url.Values, error) {
+func (client *SendCloudSms) prepareSendVoiceSmsParams(args *VoiceSms) (url.Values, error) {
 	params := url.Values{}
 	params.Set("smsUser", client.smsUser)
 	params.Set("phone", args.Phone)
@@ -99,12 +99,12 @@ func (client *SendCloud) prepareSendVoiceSmsParams(args *VoiceSms) (url.Values, 
 	return params, nil
 }
 
-func (client *SendCloud) prepareSendCodeSmsParams(args *CodeSms) (url.Values, error) {
+func (client *SendCloudSms) prepareSendCodeSmsParams(args *CodeSms) (url.Values, error) {
 	params := url.Values{}
 	params.Set("smsUser", client.smsUser)
 	params.Set("msgType", strconv.Itoa(args.MsgType))
 	params.Set("phone", args.Phone)
-	if args.SignId!=0{
+	if args.SignId != 0 {
 		params.Set("signId", strconv.Itoa(args.SignId))
 	}
 	if len(args.SignName) > 0 {
